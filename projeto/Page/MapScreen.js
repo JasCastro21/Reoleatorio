@@ -1,54 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import mockPlaces from './MockPlace';
 
 const MapScreen = () => {
-  const uniforCoordinates = {
-    latitude: -3.7691,
-    longitude: -38.4764,
-  };
-
-  const [randomCoordinates, setRandomCoordinates] = useState(null);
+  const [currentPlaceIndex, setCurrentPlaceIndex] = useState(0);
+  const mapRef = useRef(null);
 
   const generateRandomCoordinates = () => {
-    
-    const latitude = uniforCoordinates.latitude + (Math.random() - 0.5) * 0.01;
-    const longitude = uniforCoordinates.longitude + (Math.random() - 0.5) * 0.01;
-    setRandomCoordinates({ latitude, longitude });
+    const nextIndex = (currentPlaceIndex + 1) % mockPlaces.length;
+    setCurrentPlaceIndex(nextIndex);
+
+    const nextPlace = mockPlaces[nextIndex];
+    if (mapRef.current) {
+      mapRef.current.animateToRegion({
+        latitude: nextPlace.latitude,
+        longitude: nextPlace.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }, 1000);
+    }
   };
+
+  const currentPlace = mockPlaces[currentPlaceIndex];
 
   return (
     <View style={styles.container}>
+      {/* Cabeçalho com a saudação e a pergunta */}
       <View style={styles.header}>
         <Text style={styles.greeting}>Olá Jasmine!</Text>
         <Text style={styles.question}>Qual Será Seu Próximo Rolê?</Text>
       </View>
 
-      
       <View style={styles.mapContainer}>
         <MapView
+          ref={mapRef}
           style={styles.map}
           initialRegion={{
-            ...uniforCoordinates,
+            latitude: mockPlaces[0].latitude,
+            longitude: mockPlaces[0].longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
         >
-         
-          <Marker
-            coordinate={uniforCoordinates}
-            title="UNIFOR"
-            description="Universidade de Fortaleza"
-          />
-
-     
-          {randomCoordinates && (
+          {mockPlaces.map((place, index) => (
             <Marker
-              coordinate={randomCoordinates}
-              title="Local Aleatório"
-              description="Este é um local aleatório próximo à UNIFOR"
+              key={index}
+              coordinate={{ latitude: place.latitude, longitude: place.longitude }}
+              title={place.name}
+              description={place.type}
+              opacity={index === currentPlaceIndex ? 1 : 0}
             />
-          )}
+          ))}
         </MapView>
       </View>
 
