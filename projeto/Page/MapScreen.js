@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import mockPlaces from './MockPlace';
+import mockPlaces from './MockPlace'; 
+import { useNavigation } from '@react-navigation/native';
 
 const MapScreen = () => {
   const [currentPlaceIndex, setCurrentPlaceIndex] = useState(0);
   const mapRef = useRef(null);
+  const navigation = useNavigation();
 
   const generateRandomCoordinates = () => {
     const nextIndex = (currentPlaceIndex + 1) % mockPlaces.length;
@@ -22,14 +24,24 @@ const MapScreen = () => {
     }
   };
 
+  const goToPreferences = () => {
+    navigation.navigate('Pref');
+  };
+
   const currentPlace = mockPlaces[currentPlaceIndex];
 
   return (
     <View style={styles.container}>
-      {/* Cabeçalho com a saudação e a pergunta */}
       <View style={styles.header}>
         <Text style={styles.greeting}>Olá Jasmine!</Text>
-        <Text style={styles.question}>Qual Será Seu Próximo Rolê?</Text>
+        <Text style={styles.question}>Qual será seu próximo rolê?</Text>
+      </View>
+
+      <View style={styles.preferencesContainer}>
+        <Text style={styles.preferencesLabel}>Preferências:</Text>
+        <TouchableOpacity style={styles.preferenceButton} onPress={goToPreferences}>
+          <Text style={styles.preferenceButtonText}>+</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.mapContainer}>
@@ -95,12 +107,20 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   preferenceButton: {
-    backgroundColor: '#444',
-    borderRadius: 20,
     padding: 10,
+    borderRadius: 20,
+    borderWidth: 2, 
+    borderColor: '#FF7B01', 
+    width: 50,
+    height: 50,
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
   preferenceButtonText: {
     color: '#FFF',
+    fontSize: 24,
+    fontWeight: 'bold',
+    lineHeight: 28, 
   },
   mapContainer: {
     width: Dimensions.get('window').width * 0.9,

@@ -5,7 +5,8 @@ import { StatusBar } from 'react-native';
 import MainScreen from './Page/MainScreen';
 import LoginScreen from './Page/LoginScreen';
 import SignUpScreen from './Page/SignUpScreen';
-import MapScreen from './Page/MapScreen'
+import MapScreen from './Page/MapScreen';
+import PreferencesScreen from './Page/PreferencesScreen';
 
 
 const Stack = createStackNavigator();
@@ -25,6 +26,9 @@ const App = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Cadastro" component={SignUpScreen} />
           <Stack.Screen name="Mapa" component={MapScreen} />
+          <Stack.Screen name="Pref" component={PreferencesScreen} />
+          
+
         </Stack.Navigator>
       </NavigationContainer>
     </>
