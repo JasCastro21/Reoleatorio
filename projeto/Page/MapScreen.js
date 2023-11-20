@@ -10,12 +10,22 @@ const MapScreen = () => {
   const mapRef = useRef(null);
   const navigation = useNavigation();
 
+  // Função modificada para sortear com base nas preferências
   const generateRandomCoordinates = () => {
-    const nextIndex = (currentPlaceIndex + 1) % mockPlaces.length;
-    setCurrentPlaceIndex(nextIndex);
+    let nextPlace;
 
-    const nextPlace = mockPlaces[nextIndex];
-    if (mapRef.current) {
+    if (selectedOptions.length > 0) {
+      // Seleciona um tipo aleatório das preferências
+      const randomType = selectedOptions[Math.floor(Math.random() * selectedOptions.length)];
+      nextPlace = getRandomPlaceByType(randomType);
+    } else {
+      // Seleciona qualquer localidade se não houver preferências
+      const nextIndex = (currentPlaceIndex + 1) % mockPlaces.length;
+      setCurrentPlaceIndex(nextIndex);
+      nextPlace = mockPlaces[nextIndex];
+    }
+
+    if (mapRef.current && nextPlace) {
       mapRef.current.animateToRegion({
         latitude: nextPlace.latitude,
         longitude: nextPlace.longitude,
@@ -25,6 +35,22 @@ const MapScreen = () => {
     }
   };
 
+  const getRandomPlaceByType = (type) => {
+    const filteredPlaces = mockPlaces.filter(place => place.type === type);
+    if (filteredPlaces.length === 0) {
+      return null;
+    }
+    const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
+    const nextPlace = filteredPlaces[randomIndex];
+  
+    // Encontrar o índice correspondente em mockPlaces
+    const newPlaceIndex = mockPlaces.findIndex(place => place.name === nextPlace.name);
+    setCurrentPlaceIndex(newPlaceIndex);
+  
+    return nextPlace;
+  };
+  
+
   const goToPreferences = () => {
     navigation.navigate('Pref', {
       selectedOptions, 
@@ -33,6 +59,7 @@ const MapScreen = () => {
   };
 
   const currentPlace = mockPlaces[currentPlaceIndex];
+
 
   return (
     <View style={styles.container}>
