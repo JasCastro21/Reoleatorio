@@ -10,16 +10,12 @@ const MapScreen = () => {
   const mapRef = useRef(null);
   const navigation = useNavigation();
 
-  // Função modificada para sortear com base nas preferências
   const generateRandomCoordinates = () => {
     let nextPlace;
-
     if (selectedOptions.length > 0) {
-      // Seleciona um tipo aleatório das preferências
       const randomType = selectedOptions[Math.floor(Math.random() * selectedOptions.length)];
       nextPlace = getRandomPlaceByType(randomType);
     } else {
-      // Seleciona qualquer localidade se não houver preferências
       const nextIndex = (currentPlaceIndex + 1) % mockPlaces.length;
       setCurrentPlaceIndex(nextIndex);
       nextPlace = mockPlaces[nextIndex];
@@ -43,7 +39,6 @@ const MapScreen = () => {
     const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
     const nextPlace = filteredPlaces[randomIndex];
   
-    // Encontrar o índice correspondente em mockPlaces
     const newPlaceIndex = mockPlaces.findIndex(place => place.name === nextPlace.name);
     setCurrentPlaceIndex(newPlaceIndex);
   

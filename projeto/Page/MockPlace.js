@@ -77,7 +77,55 @@ const mockPlaces = [
       latitude: -3.7589,
       longitude: -38.4915,
     },
-    // Adicione mais lugares conforme necessário
+    {
+      name: 'Sabores da Cidade',
+      type: 'Restaurante',
+      latitude: -3.7312,
+      longitude: -38.5024,
+    },
+    {
+      name: 'Pérola Gourmet',
+      type: 'Restaurante',
+      latitude: -3.7461,
+      longitude: -38.5122,
+    },
+    {
+      name: 'Cantinho do Sabor',
+      type: 'Restaurante',
+      latitude: -3.7400,
+      longitude: -38.4932,
+    },
+    {
+      name: 'Estrela do Mar',
+      type: 'Restaurante',
+      latitude: -3.7452,
+      longitude: -38.4984,
+    },
+    {
+      name: 'Terraço Tropical',
+      type: 'Restaurante',
+      latitude: -3.7591,
+      longitude: -38.5053,
+    },
+    {
+      name: 'Delícias do Chef',
+      type: 'Restaurante',
+      latitude: -3.7234,
+      longitude: -38.5256,
+    },
+    {
+      name: 'Sabor e Arte',
+      type: 'Restaurante',
+      latitude: -3.7289,
+      longitude: -38.5310,
+    },
+    {
+      name: 'Culinária da Terra',
+      type: 'Restaurante',
+      latitude: -3.7321,
+      longitude: -38.5222,
+    }
+    
   ];
   
   export default mockPlaces;
