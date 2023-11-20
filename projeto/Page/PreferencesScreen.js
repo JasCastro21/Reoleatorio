@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import mockPlaces from './MockPlace';
 
-const PreferencesScreen = ({ navigation }) => {
+const PreferencesScreen = ({ navigation, route }) => {
+  const { selectedOptions, updateSelectedOptions } = route.params;
   const uniqueTypes = Array.from(new Set(mockPlaces.map(place => place.type)));
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState(selectedOptions);
 
   const toggleType = (type) => {
-    setSelectedTypes(prevSelectedTypes =>
+    setSelectedTypes((prevSelectedTypes) =>
       prevSelectedTypes.includes(type)
-        ? prevSelectedTypes.filter(t => t !== type)
+        ? prevSelectedTypes.filter((t) => t !== type)
         : [...prevSelectedTypes, type]
     );
   };
 
   const applyFilters = () => {
+    updateSelectedOptions(selectedTypes);
     navigation.goBack();
   };
 
@@ -29,8 +31,20 @@ const PreferencesScreen = ({ navigation }) => {
             style={styles.typeButton}
             onPress={() => toggleType(type)}
           >
-            <View style={[styles.typeSquare, isSelected(type) ? styles.typeSquareSelected : {}]}>
-              <Text style={[styles.typeButtonText, isSelected(type) ? styles.typeButtonTextSelected : {}]}>+</Text>
+            <View
+              style={[
+                styles.typeSquare,
+                isSelected(type) ? styles.typeSquareSelected : {},
+              ]}
+            >
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  isSelected(type) ? styles.typeButtonTextSelected : {},
+                ]}
+              >
+                +
+              </Text>
             </View>
             <Text style={styles.typeLabel}>{type}</Text>
           </TouchableOpacity>
@@ -60,7 +74,7 @@ const styles = StyleSheet.create({
   typeSquare: {
     width: 40,
     height: 40,
-    borderRadius: 10, // Isso torna as bordas arredondadas para criar um quadrado com cantos arredondados
+    borderRadius: 10, 
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 20,

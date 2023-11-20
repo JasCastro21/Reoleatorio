@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const MapScreen = () => {
   const [currentPlaceIndex, setCurrentPlaceIndex] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]); 
   const mapRef = useRef(null);
   const navigation = useNavigation();
 
@@ -25,7 +26,10 @@ const MapScreen = () => {
   };
 
   const goToPreferences = () => {
-    navigation.navigate('Pref');
+    navigation.navigate('Pref', {
+      selectedOptions, 
+      updateSelectedOptions: (newOptions) => setSelectedOptions(newOptions), 
+    });
   };
 
   const currentPlace = mockPlaces[currentPlaceIndex];
@@ -42,6 +46,13 @@ const MapScreen = () => {
         <TouchableOpacity style={styles.preferenceButton} onPress={goToPreferences}>
           <Text style={styles.preferenceButtonText}>+</Text>
         </TouchableOpacity>
+        <View style={styles.selectedOptionsContainer}>
+          {selectedOptions.map((option, index) => (
+            <View key={index} style={styles.selectedOption}>
+              <Text style={styles.selectedOptionText}>{option}</Text>
+            </View>
+          ))}
+        </View>
       </View>
 
       <View style={styles.mapContainer}>
@@ -121,6 +132,23 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     lineHeight: 28, 
+  },
+  selectedOptionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  selectedOption: {
+    backgroundColor: '#FF7B01',
+    borderRadius: 20,
+    padding: 5,
+    marginRight: 5,
+    marginTop: 5,
+  },
+  selectedOptionText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   mapContainer: {
     width: Dimensions.get('window').width * 0.9,
